@@ -39,16 +39,15 @@ function setup() {
 }
 
 function draw() {
-  background(0);
+  noStroke();
+  fill(0, 1);
+  plane(width, height);
 
   strokeWeight(0.25);
   stroke(255);
+  fill(255, 64, 0);
 
   ambientLight(255, 255, 255);
-
-  specularMaterial(250);
-
-  fill(255, 64, 0);
 
   texture(img);
   box(200, 175, 10);
@@ -56,7 +55,6 @@ function draw() {
 
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
-  background(0);
   easycam.setViewport([0, 0, windowWidth, windowHeight]);
 }
 

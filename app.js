@@ -41,7 +41,7 @@ function setup() {
 function draw() {
   noStroke();
   fill(0, 1);
-  plane(width, height);
+  plane(width * 8, height * 8);
 
   strokeWeight(0.25);
   stroke(255);

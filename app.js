@@ -1,21 +1,21 @@
 // p5.disableFriendlyErrors = true;
 
-let container, canvas, easycam, img;
+let container, canvas, img, mesh, easycam;
 
 function preload() {
-  img = loadImage("./cover.jpg");
+  img = loadImage("./texture.png");
+  mesh = loadModel("./model.obj", true);
 }
 
 function setup() {
   container = document.querySelector("#p5-container");
-  setAttributes("antialias", true);
-
   canvas = createCanvas(windowWidth, windowHeight, WEBGL);
   canvas.parent("p5-container");
+  setAttributes("antialias", true);
 
   // fix for EasyCam to work with p5 v0.9.0+
   Dw.EasyCam.prototype.apply = function (n) {
-    var o = this.cam;
+    let o = this.cam;
     (n = n || o.renderer),
       n &&
         ((this.camEYE = this.getPosition(this.camEYE)),
@@ -39,18 +39,25 @@ function setup() {
 }
 
 function draw() {
+  push();
+  let locX = mouseX - height / 2;
+  let locY = mouseY - width / 2;
+
+  ambientLight(50);
+
+  directionalLight(250, 250, 250, -locX, -locY, -10);
+  directionalLight(250, 250, 250, locX, locY, 10);
+
+  pointLight(255, 255, 255, locX, locY, 250);
+  pointLight(255, 255, 255, locX, locY, -250);
+
+  fill(0);
   noStroke();
-  fill(0, 1);
-  plane(width * 8, height * 8);
-
-  strokeWeight(0.25);
-  stroke(255);
-  fill(255, 64, 0);
-
-  ambientLight(255, 255, 255);
-
+  rotateX(radians(90));
+  specularMaterial(250);
   texture(img);
-  box(200, 175, 10);
+  model(mesh);
+  pop();
 }
 
 function windowResized() {

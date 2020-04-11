@@ -57,7 +57,7 @@ function draw() {
   // edges of case
   push();
   let state = easycam.getState().rotation.reduce((a, b) => a + b, 0);
-  let rotation = map(state, -2, 2, 0, 255);
+  let rotation = map(state, -2, 4, 0, 255);
   strokeWeight(0.25);
   stroke(rotation);
   shininess(100);

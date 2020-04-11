@@ -43,6 +43,21 @@ li {
   color: #9c9c9c;
 }
 
+.controls {
+  margin-top: 15px;
+}
+
+.transport-control {
+  display: inline-block;
+  padding: 9px;
+  background-color: #0c0c0c;
+}
+
+.transport-control:hover {
+  cursor: pointer;
+  background-color: #1c1c1c;
+}
+
 @media (max-width: 540px) {
   #hud {
     padding: 5px;

@@ -12,6 +12,7 @@ function setup() {
   canvas = createCanvas(windowWidth, windowHeight, WEBGL);
   canvas.parent("p5-container");
   setAttributes("antialias", true);
+  background(0);
 
   // fix for EasyCam to work with p5 v0.9.0+
   Dw.EasyCam.prototype.apply = function (n) {

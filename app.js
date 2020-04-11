@@ -79,6 +79,7 @@ function draw() {
 
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
+  background(0);
   easycam.setViewport([0, 0, windowWidth, windowHeight]);
 }
 

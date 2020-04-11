@@ -25,7 +25,9 @@ const waveSpectrum = (sketch) => {
 
   sketch.initTransportControls = function () {
     play.addEventListener("click", () => {
-      song.play();
+      if (!song.isPlaying()) {
+        song.play();
+      }
     });
 
     pause.addEventListener("click", () => {

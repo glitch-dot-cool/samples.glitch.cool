@@ -54,6 +54,18 @@ function draw() {
   pointLight(255, 255, 255, locX, locY, 250);
   pointLight(255, 255, 255, locX, locY, -250);
 
+  // edges of case
+  push();
+  let state = easycam.getState().rotation.reduce((a, b) => a + b, 0);
+  let rotation = map(state, -2, 2, 0, 255);
+  strokeWeight(0.25);
+  stroke(rotation);
+  shininess(100);
+  specularMaterial(0);
+  box(201, 176, 9);
+  pop();
+
+  // case front/back
   fill(0);
   noStroke();
   rotateX(radians(90));

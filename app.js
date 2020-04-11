@@ -33,7 +33,9 @@ function setup() {
           this.camRUP[2]
         ));
   };
-  easycam = createEasyCam({ distance: 300 });
+
+  easycam = new Dw.EasyCam(this._renderer, { distance: 300 });
+  initHUD();
 
   setupMouseBehavior();
 }
@@ -58,6 +60,8 @@ function draw() {
   texture(img);
   model(mesh);
   pop();
+
+  displayHUD();
 }
 
 function windowResized() {
@@ -72,4 +76,60 @@ function setupMouseBehavior() {
   document.onmousedown = function () {
     return false;
   };
+}
+
+// utility function to get some GL/GLSL/WEBGL information
+function getGLInfo() {
+  let gl = this._renderer.GL;
+
+  let info = {};
+  info.gl = gl;
+
+  let debugInfo = gl.getExtension("WEBGL_debug_renderer_info");
+  if (debugInfo) {
+    info.gpu_renderer = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
+    info.gpu_vendor = gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL);
+  }
+  info.wgl_renderer = gl.getParameter(gl.RENDERER);
+  info.wgl_version = gl.getParameter(gl.VERSION);
+  info.wgl_glsl = gl.getParameter(gl.SHADING_LANGUAGE_VERSION);
+  info.wgl_vendor = gl.getParameter(gl.VENDOR);
+
+  return info;
+}
+
+function initHUD() {
+  let hleft = select("#hud-left");
+  let hright = select("#hud-right");
+
+  createElement("li", "gpu_renderer:").parent(hleft);
+  createElement("li", "wgl_version:").parent(hleft);
+  createElement("li", "wgl_glsl:").parent(hleft);
+  createElement("li", "framerate:").parent(hleft).attribute("gap", "");
+  createElement("li", "viewport:").parent(hleft);
+  createElement("li", "distance:").parent(hleft).attribute("gap", "");
+  createElement("li", "center:").parent(hleft);
+  createElement("li", "rotation:").parent(hleft);
+
+  let info = getGLInfo();
+  createElement("li", info.gpu_renderer || ".").parent(hright);
+  createElement("li", info.wgl_version || ".").parent(hright);
+  createElement("li", info.wgl_glsl || ".").parent(hright);
+  createElement("li", ".").parent(hright).attribute("gap", "");
+  createElement("li", ".").parent(hright);
+  createElement("li", ".").parent(hright).attribute("gap", "");
+  createElement("li", ".").parent(hright);
+  createElement("li", ".").parent(hright);
+}
+
+function displayHUD() {
+  let state = easycam.getState();
+
+  // update list
+  let ul = select("#hud-right");
+  ul.elt.children[3].innerHTML = nfs(frameRate(), 1, 2);
+  ul.elt.children[4].innerHTML = nfs(easycam.getViewport(), 1, 0);
+  ul.elt.children[5].innerHTML = nfs(state.distance, 1, 2);
+  ul.elt.children[6].innerHTML = nfs(state.center, 1, 2);
+  ul.elt.children[7].innerHTML = nfs(state.rotation, 1, 3);
 }

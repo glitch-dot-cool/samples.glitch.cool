@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>glitch.cool samples vol. 2</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.0.0/p5.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.0.0/lib/addons/p5.sound.js"></script>
     <script src="https://diwi.github.io/p5.EasyCam/p5.easycam.js"></script>
     <link rel="stylesheet" href="main.css" />
   </head>
@@ -13,8 +14,14 @@
       <div id="hud">
         <div id="hud-left"></div>
         <div id="hud-right"></div>
+        <div class="controls">
+          <div id="play" class="transport-control">play</div>
+          <div id="pause" class="transport-control">pause</div>
+        </div>
       </div>
     </div>
+    <div id="p5-audio-container"></div>
     <script src="app.js"></script>
+    <script src="audio.js"></script>
   </body>
 </html>

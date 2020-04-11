@@ -1,149 +1,161 @@
 // p5.disableFriendlyErrors = true;
 
-let container, canvas, img, mesh, easycam;
+const main = (sketch) => {
+  let img, mesh;
 
-function preload() {
-  img = loadImage("./texture.png");
-  mesh = loadModel("./model.obj", true);
-}
-
-function setup() {
-  container = document.querySelector("#p5-container");
-  canvas = createCanvas(windowWidth, windowHeight, WEBGL);
-  canvas.parent("p5-container");
-  setAttributes("antialias", true);
-  background(0);
-
-  // fix for EasyCam to work with p5 v0.9.0+
-  Dw.EasyCam.prototype.apply = function (n) {
-    let o = this.cam;
-    (n = n || o.renderer),
-      n &&
-        ((this.camEYE = this.getPosition(this.camEYE)),
-        (this.camLAT = this.getCenter(this.camLAT)),
-        (this.camRUP = this.getUpVector(this.camRUP)),
-        n._curCamera.camera(
-          this.camEYE[0],
-          this.camEYE[1],
-          this.camEYE[2],
-          this.camLAT[0],
-          this.camLAT[1],
-          this.camLAT[2],
-          this.camRUP[0],
-          this.camRUP[1],
-          this.camRUP[2]
-        ));
+  sketch.preload = function () {
+    img = sketch.loadImage("./texture.png");
+    mesh = sketch.loadModel("./model.obj", true);
   };
 
-  easycam = new Dw.EasyCam(this._renderer, { distance: 300 });
-  initHUD();
+  sketch.setup = function () {
+    const canvas = sketch.createCanvas(
+      sketch.windowWidth,
+      sketch.windowHeight,
+      sketch.WEBGL
+    );
+    canvas.parent("p5-container");
 
-  setupMouseBehavior();
-}
+    sketch.setAttributes("antialias", true);
+    sketch.background(0);
 
-function draw() {
-  push();
-  let state = easycam.getState().rotation.reduce((a, b) => a + b, 0);
-  let rotation = map(state, -2, 4, 0, 255);
-  let locX = mouseX - height / 2;
-  let locY = mouseY - width / 2;
+    // fix for EasyCam to work with p5 v0.9.0+
+    Dw.EasyCam.prototype.apply = function (n) {
+      let o = this.cam;
+      (n = n || o.renderer),
+        n &&
+          ((this.camEYE = this.getPosition(this.camEYE)),
+          (this.camLAT = this.getCenter(this.camLAT)),
+          (this.camRUP = this.getUpVector(this.camRUP)),
+          n._curCamera.camera(
+            this.camEYE[0],
+            this.camEYE[1],
+            this.camEYE[2],
+            this.camLAT[0],
+            this.camLAT[1],
+            this.camLAT[2],
+            this.camRUP[0],
+            this.camRUP[1],
+            this.camRUP[2]
+          ));
+    };
 
-  ambientLight(50);
+    sketch.easycam = new Dw.EasyCam(this._renderer, { distance: 300 });
 
-  directionalLight(250, 250, 250, -locX, -locY, -10);
-  directionalLight(250, 250, 250, locX, locY, 10);
-
-  pointLight(255, 255, 255, locX, locY, 250);
-  pointLight(255, 255, 255, locX, locY, -250);
-
-  // edges of case
-  push();
-  strokeWeight(0.25);
-  stroke(rotation);
-  shininess(100);
-  specularMaterial(0);
-  box(201, 176, 9);
-  pop();
-
-  // case front/back
-  fill(0);
-  noStroke();
-  rotateX(radians(90));
-  specularMaterial(250);
-  texture(img);
-  model(mesh);
-  pop();
-
-  displayHUD();
-}
-
-function windowResized() {
-  resizeCanvas(windowWidth, windowHeight);
-  background(0);
-  easycam.setViewport([0, 0, windowWidth, windowHeight]);
-}
-
-function setupMouseBehavior() {
-  document.oncontextmenu = function () {
-    return false;
+    sketch.initHUD();
+    sketch.setupMouseBehavior();
   };
-  document.onmousedown = function () {
-    return false;
+
+  sketch.draw = function () {
+    sketch.push();
+    let state = sketch.easycam.getState().rotation.reduce((a, b) => a + b, 0);
+    let rotation = sketch.map(state, -2, 4, 0, 255);
+    let locX = sketch.mouseX - sketch.height / 2;
+    let locY = sketch.mouseY - sketch.width / 2;
+
+    sketch.ambientLight(50);
+
+    sketch.directionalLight(250, 250, 250, -locX, -locY, -10);
+    sketch.directionalLight(250, 250, 250, locX, locY, 10);
+
+    sketch.pointLight(255, 255, 255, locX, locY, 250);
+    sketch.pointLight(255, 255, 255, locX, locY, -250);
+
+    // edges of case
+    sketch.push();
+    sketch.strokeWeight(0.25);
+    sketch.stroke(rotation);
+    sketch.shininess(100);
+    sketch.specularMaterial(0);
+    sketch.box(201, 176, 9);
+    sketch.pop();
+
+    // case front/back
+    sketch.fill(0);
+    sketch.noStroke();
+    sketch.rotateX(sketch.radians(90));
+    sketch.specularMaterial(250);
+    sketch.texture(img);
+    sketch.model(mesh);
+    sketch.pop();
+
+    sketch.displayHUD();
   };
-}
 
-// utility function to get some GL/GLSL/WEBGL information
-function getGLInfo() {
-  let gl = this._renderer.GL;
+  sketch.windowResized = function () {
+    sketch.resizeCanvas(sketch.windowWidth, sketch.windowHeight);
+    sketch.background(0);
+    sketch.easycam.setViewport([0, 0, sketch.windowWidth, sketch.windowHeight]);
+  };
 
-  let info = {};
-  info.gl = gl;
+  sketch.setupMouseBehavior = function () {
+    document.oncontextmenu = function () {
+      return false;
+    };
+    document.onmousedown = function () {
+      return false;
+    };
+  };
 
-  let debugInfo = gl.getExtension("WEBGL_debug_renderer_info");
-  if (debugInfo) {
-    info.gpu_renderer = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
-    info.gpu_vendor = gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL);
-  }
-  info.wgl_renderer = gl.getParameter(gl.RENDERER);
-  info.wgl_version = gl.getParameter(gl.VERSION);
-  info.wgl_glsl = gl.getParameter(gl.SHADING_LANGUAGE_VERSION);
-  info.wgl_vendor = gl.getParameter(gl.VENDOR);
+  // utility function to get some GL/GLSL/WEBGL information
+  sketch.getGLInfo = function () {
+    let gl = this._renderer.GL;
 
-  return info;
-}
+    let info = {};
+    info.gl = gl;
 
-function initHUD() {
-  let hleft = select("#hud-left");
-  let hright = select("#hud-right");
+    let debugInfo = gl.getExtension("WEBGL_debug_renderer_info");
+    if (debugInfo) {
+      info.gpu_renderer = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
+      info.gpu_vendor = gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL);
+    }
+    info.wgl_renderer = gl.getParameter(gl.RENDERER);
+    info.wgl_version = gl.getParameter(gl.VERSION);
+    info.wgl_glsl = gl.getParameter(gl.SHADING_LANGUAGE_VERSION);
+    info.wgl_vendor = gl.getParameter(gl.VENDOR);
 
-  createElement("li", "gpu_renderer:").parent(hleft);
-  createElement("li", "wgl_version:").parent(hleft);
-  createElement("li", "wgl_glsl:").parent(hleft);
-  createElement("li", "framerate:").parent(hleft).attribute("gap", "");
-  createElement("li", "viewport:").parent(hleft);
-  createElement("li", "distance:").parent(hleft).attribute("gap", "");
-  createElement("li", "center:").parent(hleft);
-  createElement("li", "rotation:").parent(hleft);
+    return info;
+  };
 
-  let info = getGLInfo();
-  createElement("li", info.gpu_renderer || ".").parent(hright);
-  createElement("li", info.wgl_version || ".").parent(hright);
-  createElement("li", info.wgl_glsl || ".").parent(hright);
-  createElement("li", ".").parent(hright).attribute("gap", "");
-  createElement("li", ".").parent(hright);
-  createElement("li", ".").parent(hright).attribute("gap", "");
-  createElement("li", ".").parent(hright);
-  createElement("li", ".").parent(hright);
-}
+  sketch.initHUD = function () {
+    let hleft = sketch.select("#hud-left");
+    let hright = sketch.select("#hud-right");
 
-function displayHUD() {
-  let state = easycam.getState();
+    sketch.createElement("li", "gpu_renderer:").parent(hleft);
+    sketch.createElement("li", "wgl_version:").parent(hleft);
+    sketch.createElement("li", "wgl_glsl:").parent(hleft);
+    sketch.createElement("li", "framerate:").parent(hleft).attribute("gap", "");
+    sketch.createElement("li", "viewport:").parent(hleft);
+    sketch.createElement("li", "distance:").parent(hleft).attribute("gap", "");
+    sketch.createElement("li", "center:").parent(hleft);
+    sketch.createElement("li", "rotation:").parent(hleft);
 
-  // update list
-  let ul = select("#hud-right");
-  ul.elt.children[3].innerHTML = nfs(frameRate(), 1, 2);
-  ul.elt.children[4].innerHTML = nfs(easycam.getViewport(), 1, 0);
-  ul.elt.children[5].innerHTML = nfs(state.distance, 1, 2);
-  ul.elt.children[6].innerHTML = nfs(state.center, 1, 2);
-  ul.elt.children[7].innerHTML = nfs(state.rotation, 1, 3);
-}
+    let info = sketch.getGLInfo();
+    sketch.createElement("li", info.gpu_renderer || ".").parent(hright);
+    sketch.createElement("li", info.wgl_version || ".").parent(hright);
+    sketch.createElement("li", info.wgl_glsl || ".").parent(hright);
+    sketch.createElement("li", ".").parent(hright).attribute("gap", "");
+    sketch.createElement("li", ".").parent(hright);
+    sketch.createElement("li", ".").parent(hright).attribute("gap", "");
+    sketch.createElement("li", ".").parent(hright);
+    sketch.createElement("li", ".").parent(hright);
+  };
+
+  sketch.displayHUD = function () {
+    let state = sketch.easycam.getState();
+
+    // update list
+    let ul = sketch.select("#hud-right");
+    ul.elt.children[3].innerHTML = sketch.nfs(sketch.frameRate(), 1, 2);
+    ul.elt.children[4].innerHTML = sketch.nfs(
+      sketch.easycam.getViewport(),
+      1,
+      0
+    );
+    ul.elt.children[5].innerHTML = sketch.nfs(state.distance, 1, 2);
+    ul.elt.children[6].innerHTML = sketch.nfs(state.center, 1, 2);
+    ul.elt.children[7].innerHTML = sketch.nfs(state.rotation, 1, 3);
+  };
+};
+
+let p5Main = new p5(main);

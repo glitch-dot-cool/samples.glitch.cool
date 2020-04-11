@@ -43,6 +43,8 @@ function setup() {
 
 function draw() {
   push();
+  let state = easycam.getState().rotation.reduce((a, b) => a + b, 0);
+  let rotation = map(state, -2, 4, 0, 255);
   let locX = mouseX - height / 2;
   let locY = mouseY - width / 2;
 
@@ -56,8 +58,6 @@ function draw() {
 
   // edges of case
   push();
-  let state = easycam.getState().rotation.reduce((a, b) => a + b, 0);
-  let rotation = map(state, -2, 4, 0, 255);
   strokeWeight(0.25);
   stroke(rotation);
   shininess(100);
@@ -79,6 +79,7 @@ function draw() {
 
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
+  background(0);
   easycam.setViewport([0, 0, windowWidth, windowHeight]);
 }
 

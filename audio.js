@@ -1,8 +1,16 @@
 const waveSpectrum = (sketch) => {
-  let song, amplitude, fft;
+  let song, amplitude, fft, binSize;
   let play = document.querySelector("#play");
   let pause = document.querySelector("#pause");
   let instructions = document.querySelector(".instructions-container");
+
+  // hacky mobile detection
+  const isMobile =
+    navigator.userAgent.toLowerCase().indexOf("mobile") !== -1 ||
+    navigator.userAgent.toLowerCase().indexOf("iphone") !== -1 ||
+    navigator.userAgent.toLowerCase().indexOf("ios") !== -1 ||
+    navigator.userAgent.toLowerCase().indexOf("android") !== -1 ||
+    navigator.userAgent.toLowerCase().indexOf("windows phone") !== -1;
 
   sketch.preload = function () {
     song = sketch.loadSound("./teaser.mp3");
@@ -12,11 +20,12 @@ const waveSpectrum = (sketch) => {
     sketch.getAudioContext().suspend();
     const audioCanvas = sketch.createCanvas(sketch.windowWidth, 200);
     audioCanvas.parent("p5-audio-container");
+    sketch.setPixelDensity(isMobile);
 
     sketch.initTransportControls();
-
+    isMobile ? (binSize = 256) : (binSize = 512);
+    fft = new p5.FFT(0.8, binSize);
     amplitude = new p5.Amplitude();
-    fft = new p5.FFT(0.8, 512);
   };
 
   sketch.draw = function () {
@@ -124,6 +133,10 @@ const waveSpectrum = (sketch) => {
       sketch.stroke(audio.spectrum[i]);
       sketch.line(xPosition, sketch.height, xPosition, barHeight);
     }
+  };
+
+  sketch.setPixelDensity = function (isMobile) {
+    isMobile ? sketch.pixelDensity(1) : null;
   };
 };
 

@@ -8,6 +8,7 @@ const waveSpectrum = (sketch) => {
   };
 
   sketch.setup = function () {
+    sketch.getAudioContext().suspend();
     const audioCanvas = sketch.createCanvas(200, 200);
     audioCanvas.parent("p5-audio-container");
 
@@ -30,6 +31,7 @@ const waveSpectrum = (sketch) => {
   sketch.initTransportControls = function () {
     play.addEventListener("click", () => {
       if (!song.isPlaying()) {
+        sketch.userStartAudio();
         song.play();
       }
     });

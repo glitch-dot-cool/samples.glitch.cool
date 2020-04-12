@@ -91,7 +91,8 @@ li {
 
   .instructions-container {
     top: 138px;
-    left: 0;
+    top: auto;
+    bottom: 0;
     padding: 5px;
   }
 }

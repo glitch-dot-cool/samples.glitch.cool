@@ -1,7 +1,16 @@
 const waveSpectrum = (sketch) => {
-  let song, amplitude, fft;
+  let song, amplitude, fft, binSize;
   let play = document.querySelector("#play");
   let pause = document.querySelector("#pause");
+  let instructions = document.querySelector(".instructions-container");
+
+  // hacky mobile detection
+  const isMobile =
+    navigator.userAgent.toLowerCase().indexOf("mobile") !== -1 ||
+    navigator.userAgent.toLowerCase().indexOf("iphone") !== -1 ||
+    navigator.userAgent.toLowerCase().indexOf("ios") !== -1 ||
+    navigator.userAgent.toLowerCase().indexOf("android") !== -1 ||
+    navigator.userAgent.toLowerCase().indexOf("windows phone") !== -1;
 
   sketch.preload = function () {
     song = sketch.loadSound("./teaser.mp3");
@@ -11,11 +20,12 @@ const waveSpectrum = (sketch) => {
     sketch.getAudioContext().suspend();
     const audioCanvas = sketch.createCanvas(sketch.windowWidth, 200);
     audioCanvas.parent("p5-audio-container");
+    sketch.setPixelDensity(isMobile);
 
     sketch.initTransportControls();
-
+    isMobile ? (binSize = 256) : (binSize = 512);
+    fft = new p5.FFT(0.8, binSize);
     amplitude = new p5.Amplitude();
-    fft = new p5.FFT(0.8, 512);
   };
 
   sketch.draw = function () {
@@ -38,11 +48,17 @@ const waveSpectrum = (sketch) => {
       if (!song.isPlaying()) {
         sketch.userStartAudio();
         song.play();
+        if (sketch.windowWidth <= 540) {
+          instructions.style.display = "none";
+        }
       }
     });
 
     pause.addEventListener("click", () => {
       song.pause();
+      if (sketch.windowWidth <= 540) {
+        instructions.style.display = "block";
+      }
     });
   };
 
@@ -85,13 +101,14 @@ const waveSpectrum = (sketch) => {
   };
 
   sketch.drawWaveform = function (audio) {
+    let sketchWidth = sketch.windowWidth * 0.25;
     sketch.fill(0, 20);
-    sketch.rect(0, 0, 200, sketch.height);
+    sketch.rect(0, 0, sketchWidth, sketch.height);
 
     for (let i = 0; i < audio.waveform.length; i++) {
       sketch.stroke(audio.waveform[i] * 255);
       let barHeight = sketch.map(audio.waveform[i], 0.01, 1, sketch.height, 0);
-      let xPosition = sketch.map(i, 0, audio.waveform.length, 0, 200);
+      let xPosition = sketch.map(i, 0, audio.waveform.length, 0, sketchWidth);
 
       sketch.line(xPosition, sketch.height, xPosition, barHeight);
       sketch.line(xPosition, sketch.height, xPosition, -barHeight);
@@ -99,9 +116,10 @@ const waveSpectrum = (sketch) => {
   };
 
   sketch.drawSpectrum = function (audio) {
+    let sketchWidth = sketch.windowWidth * 0.25;
     sketch.noStroke();
     sketch.fill(0);
-    sketch.rect(sketch.width - 200, 0, 200, sketch.height);
+    sketch.rect(sketch.width - sketchWidth, 0, sketchWidth, sketch.height);
 
     for (let i = 0; i < audio.spectrum.length; i++) {
       let barHeight = sketch.map(audio.spectrum[i], 0, 255, sketch.height, 0);
@@ -109,12 +127,16 @@ const waveSpectrum = (sketch) => {
         i,
         0,
         audio.spectrum.length - 128,
-        sketch.width - 200,
+        sketch.width - sketchWidth,
         sketch.width
       );
       sketch.stroke(audio.spectrum[i]);
       sketch.line(xPosition, sketch.height, xPosition, barHeight);
     }
+  };
+
+  sketch.setPixelDensity = function (isMobile) {
+    isMobile ? sketch.pixelDensity(1) : null;
   };
 };
 

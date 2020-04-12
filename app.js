@@ -3,6 +3,14 @@
 const main = (sketch) => {
   let img, mesh;
 
+  // hacky mobile detection
+  const isMobile =
+    navigator.userAgent.toLowerCase().indexOf("mobile") !== -1 ||
+    navigator.userAgent.toLowerCase().indexOf("iphone") !== -1 ||
+    navigator.userAgent.toLowerCase().indexOf("ios") !== -1 ||
+    navigator.userAgent.toLowerCase().indexOf("android") !== -1 ||
+    navigator.userAgent.toLowerCase().indexOf("windows phone") !== -1;
+
   sketch.preload = function () {
     img = sketch.loadImage("./texture.png");
     mesh = sketch.loadModel("./model.obj", true);
@@ -16,6 +24,7 @@ const main = (sketch) => {
     );
     canvas.parent("p5-container");
 
+    sketch.setPixelDensity(isMobile);
     sketch.setAttributes("antialias", true);
     sketch.background(0);
 
@@ -40,7 +49,9 @@ const main = (sketch) => {
           ));
     };
 
-    sketch.easycam = new Dw.EasyCam(this._renderer, { distance: 300 });
+    sketch.easycam = new Dw.EasyCam(this._renderer, {
+      distance: 300,
+    });
 
     sketch.initHUD();
     sketch.setupMouseBehavior();
@@ -156,6 +167,10 @@ const main = (sketch) => {
     ul.elt.children[5].innerHTML = sketch.nfs(state.distance, 1, 2);
     ul.elt.children[6].innerHTML = sketch.nfs(state.center, 1, 2);
     ul.elt.children[7].innerHTML = sketch.nfs(state.rotation, 1, 3);
+  };
+
+  sketch.setPixelDensity = function (isMobile) {
+    isMobile ? sketch.pixelDensity(1) : null;
   };
 };
 

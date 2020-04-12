@@ -60,14 +60,45 @@ li {
   background-color: #1c1c1c;
 }
 
+.instructions-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.instructions {
+  color: #9c9c9c;
+  margin-bottom: 3px;
+}
+
+.instruction-heading {
+  color: white;
+}
+
+@media (max-width: 880px) {
+  .instructions-container {
+    top: 200px;
+    left: 0;
+  }
+}
+
 @media (max-width: 540px) {
   #hud {
+    padding: 5px;
+  }
+
+  .instructions-container {
+    top: 138px;
+    left: 0;
     padding: 5px;
   }
 }
 
 @media (max-width: 500px) {
-  #hud {
+  #hud,
+  .instructions-container {
     font-size: calc(5px + 0.9vw);
   }
 }

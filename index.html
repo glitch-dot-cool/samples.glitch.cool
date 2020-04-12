@@ -12,17 +12,37 @@
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
   </head>
   <body>
-    <div id="p5-container">
-      <div id="hud">
-        <div id="hud-left"></div>
-        <div id="hud-right"></div>
-        <div class="controls">
-          <button id="play" class="transport-control">play</button>
-          <button id="pause" class="transport-control">pause</button>
-        </div>
+    <div id="hud">
+      <div id="hud-left"></div>
+      <div id="hud-right"></div>
+      <div class="controls">
+        <button id="play" class="transport-control">play</button>
+        <button id="pause" class="transport-control">pause</button>
       </div>
     </div>
+
+    <div class="instructions-container">
+      <p class="instructions">
+        <span class="instruction-heading">rotate</span>: left click + drag
+      </p>
+      <p class="instructions">
+        <span class="instruction-heading">zoom</span>: right click + drag, or
+        scroll
+      </p>
+      <p class="instructions">
+        <span class="instruction-heading">pan</span>: middle click + drag
+      </p>
+      <p class="instructions">
+        <span class="instruction-heading">constrain</span>: shift + left/middle
+        click + drag
+      </p>
+      <p class="instructions">
+        <span class="instruction-heading">reset camera</span>: double-click
+      </p>
+    </div>
+    <div id="p5-container"></div>
     <div id="p5-audio-container"></div>
+
     <script src="app.js"></script>
     <script src="audio.js"></script>
   </body>

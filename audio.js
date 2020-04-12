@@ -29,6 +29,10 @@ const waveSpectrum = (sketch) => {
     }
   };
 
+  sketch.windowResized = function () {
+    sketch.resizeCanvas(sketch.windowWidth, 200);
+  };
+
   sketch.initTransportControls = function () {
     play.addEventListener("click", () => {
       if (!song.isPlaying()) {

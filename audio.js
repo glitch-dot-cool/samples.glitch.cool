@@ -18,9 +18,13 @@ const waveSpectrum = (sketch) => {
   };
 
   sketch.draw = function () {
-    let audio = sketch.analyzeAudio();
+    if (song.isPlaying()) {
+      let audio = sketch.analyzeAudio();
 
-    sketch.drawWaveform(audio);
+      sketch.drawWaveform(audio);
+    } else {
+      sketch.clear();
+    }
   };
 
   sketch.initTransportControls = function () {

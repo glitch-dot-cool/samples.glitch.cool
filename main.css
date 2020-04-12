@@ -30,7 +30,7 @@ li {
   left: 0;
   z-index: 10;
   padding: 20px;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 #hud-left {
@@ -48,7 +48,9 @@ li {
 }
 
 .transport-control {
-  display: inline-block;
+  border: none;
+  font-family: monospace;
+  color: white;
   padding: 9px;
   background-color: #0c0c0c;
 }

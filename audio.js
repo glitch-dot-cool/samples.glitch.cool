@@ -8,7 +8,8 @@ const waveSpectrum = (sketch) => {
   };
 
   sketch.setup = function () {
-    const audioCanvas = sketch.createCanvas(200, 200);
+    sketch.getAudioContext().suspend();
+    const audioCanvas = sketch.createCanvas(sketch.windowWidth, 200);
     audioCanvas.parent("p5-audio-container");
 
     sketch.initTransportControls();
@@ -18,14 +19,20 @@ const waveSpectrum = (sketch) => {
   };
 
   sketch.draw = function () {
-    let audio = sketch.analyzeAudio();
+    if (song.isPlaying()) {
+      let audio = sketch.analyzeAudio();
 
-    sketch.drawWaveform(audio);
+      sketch.drawWaveform(audio);
+      sketch.drawSpectrum(audio);
+    } else {
+      sketch.clear();
+    }
   };
 
   sketch.initTransportControls = function () {
     play.addEventListener("click", () => {
       if (!song.isPlaying()) {
+        sketch.userStartAudio();
         song.play();
       }
     });
@@ -74,17 +81,34 @@ const waveSpectrum = (sketch) => {
   };
 
   sketch.drawWaveform = function (audio) {
-    if (sketch.frameCount % 2 === 0) {
-      sketch.background(0, audio.volEased * 120);
-    } else {
-      sketch.background(0, 1);
-    }
+    sketch.fill(0, 20);
+    sketch.rect(0, 0, 200, sketch.height);
 
     for (let i = 0; i < audio.waveform.length; i++) {
       sketch.stroke(audio.waveform[i] * 255);
       let barHeight = sketch.map(audio.waveform[i], 0.01, 1, sketch.height, 0);
-      let xPosition = sketch.map(i, 0, audio.waveform.length, 0, sketch.width);
+      let xPosition = sketch.map(i, 0, audio.waveform.length, 0, 200);
 
+      sketch.line(xPosition, sketch.height, xPosition, barHeight);
+      sketch.line(xPosition, sketch.height, xPosition, -barHeight);
+    }
+  };
+
+  sketch.drawSpectrum = function (audio) {
+    sketch.noStroke();
+    sketch.fill(0);
+    sketch.rect(sketch.width - 200, 0, 200, sketch.height);
+
+    for (let i = 0; i < audio.spectrum.length; i++) {
+      let barHeight = sketch.map(audio.spectrum[i], 0, 255, sketch.height, 0);
+      let xPosition = sketch.map(
+        i,
+        0,
+        audio.spectrum.length - 128,
+        sketch.width - 200,
+        sketch.width
+      );
+      sketch.stroke(audio.spectrum[i]);
       sketch.line(xPosition, sketch.height, xPosition, barHeight);
     }
   };

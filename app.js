@@ -65,7 +65,7 @@ const main = (sketch) => {
     sketch.push();
     sketch.strokeWeight(0.25);
     sketch.stroke(rotation);
-    sketch.shininess(100);
+    sketch.shininess(500);
     sketch.specularMaterial(0);
     sketch.box(201, 176, 9);
     sketch.pop();

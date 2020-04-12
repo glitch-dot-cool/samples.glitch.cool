@@ -66,38 +66,10 @@ const waveSpectrum = (sketch) => {
     let spectrum = fft.analyze();
     let waveform = fft.waveform(512);
 
-    let volume = amplitude.getLevel();
-    let leftVol = amplitude.getLevel(0);
-    let rightVol = amplitude.getLevel(1);
-
-    let bass = fft.getEnergy("bass");
-    let mid = fft.getEnergy("mid");
-    let high = fft.getEnergy("treble");
-
-    let volEased = sketch.smoother(volume, 0.5);
-
     return {
       spectrum,
       waveform,
-      volume,
-      leftVol,
-      rightVol,
-      bass,
-      mid,
-      high,
-      volEased,
     };
-  };
-
-  sketch.smoother = function (volume, easing) {
-    let scaler = 1,
-      volEased = 0.001;
-
-    let target = volume * scaler;
-    let diff = target - volEased;
-    volEased += diff * easing;
-
-    return volEased;
   };
 
   sketch.drawWaveform = function (audio) {

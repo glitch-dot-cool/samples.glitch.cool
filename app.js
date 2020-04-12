@@ -170,7 +170,7 @@ const main = (sketch) => {
   };
 
   sketch.setPixelDensity = function (isMobile) {
-    isMobile ? sketch.pixelDensity(1) : null;
+    isMobile ? sketch.pixelDensity(1.5) : null;
   };
 };
 

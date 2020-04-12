@@ -53,19 +53,19 @@ const main = (sketch) => {
     let locX = sketch.mouseX - sketch.height / 2;
     let locY = sketch.mouseY - sketch.width / 2;
 
-    sketch.ambientLight(50);
+    sketch.ambientLight(100);
 
-    sketch.directionalLight(250, 250, 250, -locX, -locY, -10);
-    sketch.directionalLight(250, 250, 250, locX, locY, 10);
+    sketch.directionalLight(175, 175, 175, -locX, -locY, -10);
+    sketch.directionalLight(175, 175, 175, locX, locY, 10);
 
-    sketch.pointLight(255, 255, 255, locX, locY, 250);
-    sketch.pointLight(255, 255, 255, locX, locY, -250);
+    sketch.pointLight(175, 175, 175, locX, locY, 250);
+    sketch.pointLight(175, 175, 175, locX, locY, -250);
 
     // edges of case
     sketch.push();
     sketch.strokeWeight(0.25);
     sketch.stroke(rotation);
-    sketch.shininess(100);
+    sketch.shininess(500);
     sketch.specularMaterial(0);
     sketch.box(201, 176, 9);
     sketch.pop();
@@ -74,6 +74,7 @@ const main = (sketch) => {
     sketch.fill(0);
     sketch.noStroke();
     sketch.rotateX(sketch.radians(90));
+    sketch.rotateY(sketch.radians(180));
     sketch.specularMaterial(250);
     sketch.texture(img);
     sketch.model(mesh);

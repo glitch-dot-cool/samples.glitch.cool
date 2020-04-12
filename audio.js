@@ -2,6 +2,7 @@ const waveSpectrum = (sketch) => {
   let song, amplitude, fft;
   let play = document.querySelector("#play");
   let pause = document.querySelector("#pause");
+  let instructions = document.querySelector(".instructions-container");
 
   sketch.preload = function () {
     song = sketch.loadSound("./teaser.mp3");
@@ -38,11 +39,17 @@ const waveSpectrum = (sketch) => {
       if (!song.isPlaying()) {
         sketch.userStartAudio();
         song.play();
+        if (sketch.windowWidth <= 540) {
+          instructions.style.display = "none";
+        }
       }
     });
 
     pause.addEventListener("click", () => {
       song.pause();
+      if (sketch.windowWidth <= 540) {
+        instructions.style.display = "block";
+      }
     });
   };
 

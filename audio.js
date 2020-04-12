@@ -85,13 +85,14 @@ const waveSpectrum = (sketch) => {
   };
 
   sketch.drawWaveform = function (audio) {
+    let sketchWidth = sketch.windowWidth * 0.25;
     sketch.fill(0, 20);
-    sketch.rect(0, 0, 200, sketch.height);
+    sketch.rect(0, 0, sketchWidth, sketch.height);
 
     for (let i = 0; i < audio.waveform.length; i++) {
       sketch.stroke(audio.waveform[i] * 255);
       let barHeight = sketch.map(audio.waveform[i], 0.01, 1, sketch.height, 0);
-      let xPosition = sketch.map(i, 0, audio.waveform.length, 0, 200);
+      let xPosition = sketch.map(i, 0, audio.waveform.length, 0, sketchWidth);
 
       sketch.line(xPosition, sketch.height, xPosition, barHeight);
       sketch.line(xPosition, sketch.height, xPosition, -barHeight);
@@ -99,9 +100,10 @@ const waveSpectrum = (sketch) => {
   };
 
   sketch.drawSpectrum = function (audio) {
+    let sketchWidth = sketch.windowWidth * 0.25;
     sketch.noStroke();
     sketch.fill(0);
-    sketch.rect(sketch.width - 200, 0, 200, sketch.height);
+    sketch.rect(sketch.width - sketchWidth, 0, sketchWidth, sketch.height);
 
     for (let i = 0; i < audio.spectrum.length; i++) {
       let barHeight = sketch.map(audio.spectrum[i], 0, 255, sketch.height, 0);
@@ -109,7 +111,7 @@ const waveSpectrum = (sketch) => {
         i,
         0,
         audio.spectrum.length - 128,
-        sketch.width - 200,
+        sketch.width - sketchWidth,
         sketch.width
       );
       sketch.stroke(audio.spectrum[i]);

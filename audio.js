@@ -1,6 +1,7 @@
 const waveSpectrum = (sketch) => {
-  let song, amplitude, fft, binSize;
-  let play = document.querySelector("#play");
+  let sunnk, nuan, amplitude, fft, binSize;
+  let playNuan = document.querySelector("#play-nuan");
+  let playSunnk = document.querySelector("#play-sunnk");
   let pause = document.querySelector("#pause");
   let instructions = document.querySelector(".instructions-container");
 
@@ -13,7 +14,8 @@ const waveSpectrum = (sketch) => {
     navigator.userAgent.toLowerCase().indexOf("windows phone") !== -1;
 
   sketch.preload = function () {
-    song = sketch.loadSound("./teaser.mp3");
+    sunnk = sketch.loadSound("./sunnk_teaser.mp3");
+    nuan = sketch.loadSound("./nuan_sonar_teaser.mp3");
   };
 
   sketch.setup = function () {
@@ -29,7 +31,7 @@ const waveSpectrum = (sketch) => {
   };
 
   sketch.draw = function () {
-    if (song.isPlaying()) {
+    if (sunnk.isPlaying() || nuan.isPlaying()) {
       let audio = sketch.analyzeAudio();
 
       sketch.drawWaveform(audio);
@@ -44,18 +46,33 @@ const waveSpectrum = (sketch) => {
   };
 
   sketch.initTransportControls = function () {
-    play.addEventListener("click", () => {
-      if (!song.isPlaying()) {
-        sketch.userStartAudio();
-        song.play();
-        if (sketch.windowWidth <= 540) {
-          instructions.style.display = "none";
-        }
+    playNuan.addEventListener("click", () => {
+      sketch.userStartAudio();
+      if (!nuan.isPlaying()) {
+        sunnk.pause();
+        nuan.play();
+      }
+
+      if (sketch.windowWidth <= 540) {
+        instructions.style.display = "none";
+      }
+    });
+
+    playSunnk.addEventListener("click", () => {
+      sketch.userStartAudio();
+      if (!sunnk.isPlaying()) {
+        nuan.pause();
+        sunnk.play();
+      }
+
+      if (sketch.windowWidth <= 540) {
+        instructions.style.display = "none";
       }
     });
 
     pause.addEventListener("click", () => {
-      song.pause();
+      nuan.pause();
+      sunnk.pause();
       if (sketch.windowWidth <= 540) {
         instructions.style.display = "block";
       }

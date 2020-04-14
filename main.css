@@ -77,6 +77,27 @@ li {
   color: white;
 }
 
+.links-container {
+  position: absolute;
+  z-index: 10;
+  bottom: 30px;
+  right: 50%;
+  transform: translate(50%, 50%);
+}
+
+.links-container a {
+  text-decoration: none;
+  color: white;
+  font-size: calc(10px + 0.25vw);
+  padding: calc(2px + 1vw);
+}
+
+.links-container a:hover {
+  background-color: #3c3c3c;
+  color: #9c9c9c;
+  cursor: pointer;
+}
+
 @media (max-width: 880px) {
   .instructions-container {
     top: 200px;
@@ -93,7 +114,21 @@ li {
     top: 138px;
     top: auto;
     bottom: 0;
-    padding: 5px;
+    padding: 10px;
+  }
+
+  .links-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    padding: 10px;
+    bottom: 0;
+    right: 0;
+    transform: translate(0, 0);
+  }
+
+  .links-container a:not(:last-child) {
+    margin-bottom: 10px;
   }
 }
 

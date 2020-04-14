@@ -55,6 +55,11 @@ const main = (sketch) => {
 
     sketch.initHUD();
     sketch.setupMouseBehavior();
+
+    const clear = document.querySelector("#clear");
+    clear.addEventListener("click", () => {
+      sketch.background(0);
+    });
   };
 
   sketch.draw = function () {

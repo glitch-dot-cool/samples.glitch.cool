@@ -31,11 +31,16 @@ const waveSpectrum = (sketch) => {
   };
 
   sketch.draw = function () {
-    if (sunnk.isPlaying() || nuan.isPlaying()) {
+    if (nuan.isPlaying()) {
       let audio = sketch.analyzeAudio();
 
       sketch.drawWaveform(audio);
       sketch.drawSpectrum(audio);
+    } else if (sunnk.isPlaying()) {
+      let audio = sketch.analyzeAudio();
+
+      sketch.drawWaveformBars(audio);
+      sketch.drawSpectrogram(audio);
     } else {
       sketch.clear();
     }
@@ -51,6 +56,7 @@ const waveSpectrum = (sketch) => {
       if (!nuan.isPlaying()) {
         sunnk.pause();
         nuan.play();
+        sketch.clear();
       }
 
       if (sketch.windowWidth <= 540) {
@@ -63,6 +69,7 @@ const waveSpectrum = (sketch) => {
       if (!sunnk.isPlaying()) {
         nuan.pause();
         sunnk.play();
+        sketch.clear();
       }
 
       if (sketch.windowWidth <= 540) {
@@ -89,9 +96,8 @@ const waveSpectrum = (sketch) => {
     };
   };
 
-  sketch.drawWaveform = function (audio) {
+  sketch.drawWaveformBars = function (audio) {
     let sketchWidth = sketch.windowWidth * 0.25;
-    sketch.fill(0, 20);
     sketch.rect(0, 0, sketchWidth, sketch.height);
 
     for (let i = 0; i < audio.waveform.length; i++) {
@@ -101,6 +107,20 @@ const waveSpectrum = (sketch) => {
 
       sketch.line(xPosition, sketch.height, xPosition, barHeight);
       sketch.line(xPosition, sketch.height, xPosition, -barHeight);
+    }
+  };
+
+  sketch.drawWaveform = function (audio) {
+    let sketchWidth = sketch.windowWidth * 0.25;
+    sketch.fill(0, 20);
+    sketch.rect(0, 0, sketchWidth, sketch.height);
+
+    for (let i = 0; i < audio.waveform.length; i++) {
+      sketch.stroke(audio.waveform[i] * 255);
+      let barHeight = sketch.map(audio.waveform[i], -1, 1, sketch.height, 0);
+      let xPosition = sketch.map(i, 0, audio.waveform.length, 0, sketchWidth);
+
+      sketch.line(xPosition, sketch.height, xPosition, barHeight);
     }
   };
 
@@ -122,6 +142,29 @@ const waveSpectrum = (sketch) => {
       sketch.stroke(audio.spectrum[i]);
       sketch.line(xPosition, sketch.height, xPosition, barHeight);
     }
+  };
+
+  sketch.drawSpectrogram = function (audio) {
+    sketch.strokeWeight(2);
+    for (let i = 0; i < audio.spectrum.length; i++) {
+      let band = audio.spectrum[i];
+      sketch.stroke(band);
+      sketch.point(
+        sketch.width,
+        sketch.map(i, 0, audio.spectrum.length, sketch.height, -60)
+      );
+    }
+
+    sketch.copy(
+      0,
+      0,
+      sketch.width,
+      sketch.height,
+      -2,
+      0,
+      sketch.width,
+      sketch.height
+    );
   };
 
   sketch.setPixelDensity = function (isMobile) {

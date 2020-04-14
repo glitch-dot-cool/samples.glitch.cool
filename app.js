@@ -1,7 +1,11 @@
 // p5.disableFriendlyErrors = true;
 
 const main = (sketch) => {
-  let img, mesh;
+  let img, mesh, video;
+  let playNuan = document.querySelector("#play-nuan");
+  let playSunnk = document.querySelector("#play-sunnk");
+  let pause = document.querySelector("#pause");
+  let whoIsPlaying = null;
 
   // hacky mobile detection
   const isMobile =
@@ -14,6 +18,8 @@ const main = (sketch) => {
   sketch.preload = function () {
     img = sketch.loadImage("./texture.png");
     mesh = sketch.loadModel("./model.obj", true);
+    video = sketch.createVideo("./video.mp4");
+    video.hide();
   };
 
   sketch.setup = function () {
@@ -27,6 +33,8 @@ const main = (sketch) => {
     sketch.setPixelDensity(isMobile);
     sketch.setAttributes("antialias", true);
     sketch.background(0);
+    sketch.selectTexture();
+    // sketch.blendMode(sketch.LIGHTEST);
 
     // fix for EasyCam to work with p5 v0.9.0+
     Dw.EasyCam.prototype.apply = function (n) {
@@ -91,11 +99,16 @@ const main = (sketch) => {
     sketch.noStroke();
     sketch.rotateX(sketch.radians(90));
     sketch.rotateY(sketch.radians(180));
-    sketch.specularMaterial(250);
-    sketch.texture(img);
-    sketch.model(mesh);
-    sketch.pop();
 
+    if (whoIsPlaying === "nuan" || whoIsPlaying === null) {
+      sketch.texture(img);
+    } else {
+      sketch.texture(video);
+    }
+
+    sketch.model(mesh);
+
+    sketch.pop();
     sketch.displayHUD();
   };
 
@@ -176,6 +189,21 @@ const main = (sketch) => {
 
   sketch.setPixelDensity = function (isMobile) {
     isMobile ? sketch.pixelDensity(1.5) : null;
+  };
+
+  sketch.selectTexture = function () {
+    playNuan.addEventListener("click", () => {
+      whoIsPlaying = "nuan";
+    });
+
+    playSunnk.addEventListener("click", () => {
+      whoIsPlaying = "sunnk";
+      video.play();
+    });
+
+    pause.addEventListener("click", () => {
+      whoIsPlaying = null;
+    });
   };
 };
 

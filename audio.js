@@ -1,5 +1,5 @@
 const waveSpectrum = (sketch) => {
-  let sunnk, nuan, amplitude, fft, binSize;
+  let sunnk, nuan, fft, binSize;
   let playNuan = document.querySelector("#play-nuan");
   let playSunnk = document.querySelector("#play-sunnk");
   let pause = document.querySelector("#pause");
@@ -27,7 +27,6 @@ const waveSpectrum = (sketch) => {
     sketch.initTransportControls();
     isMobile ? (binSize = 256) : (binSize = 512);
     fft = new p5.FFT(0.8, binSize);
-    amplitude = new p5.Amplitude();
   };
 
   sketch.draw = function () {

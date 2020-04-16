@@ -51,7 +51,6 @@ const waveSpectrum = (sketch) => {
 
   sketch.windowResized = function () {
     sketch.resizeCanvas(sketch.windowWidth, 200);
-    buffer.resizeCanvas(sketch.windowWidth, 200);
   };
 
   sketch.initTransportControls = function () {
@@ -101,7 +100,8 @@ const waveSpectrum = (sketch) => {
   };
 
   sketch.drawWaveformBars = function (audio) {
-    let sketchWidth = sketch.windowWidth * 0.25;
+    let sketchWidth = sketch.calculateWidth();
+
     sketch.fill(0);
     sketch.noStroke();
     sketch.rect(0, 0, sketchWidth, sketch.height);
@@ -117,7 +117,7 @@ const waveSpectrum = (sketch) => {
   };
 
   sketch.drawWaveform = function (audio) {
-    let sketchWidth = sketch.windowWidth * 0.25;
+    let sketchWidth = sketch.calculateWidth();
     sketch.fill(0, 20);
     sketch.rect(0, 0, sketchWidth, sketch.height);
 
@@ -131,7 +131,7 @@ const waveSpectrum = (sketch) => {
   };
 
   sketch.drawSpectrum = function (audio) {
-    let sketchWidth = sketch.windowWidth * 0.25;
+    let sketchWidth = sketch.calculateWidth();
     sketch.noStroke();
     sketch.fill(0);
     sketch.rect(sketch.width - sketchWidth, 0, sketchWidth, sketch.height);
@@ -151,8 +151,9 @@ const waveSpectrum = (sketch) => {
   };
 
   sketch.drawSpectrogram = function (audio) {
+    buffer.width = Math.floor(sketch.calculateWidth());
     buffer.noFill();
-    buffer.strokeWeight(2);
+    buffer.strokeWeight(1.00001);
     for (let i = 0; i < audio.spectrum.length; i++) {
       let band = audio.spectrum[i];
       buffer.stroke(band);
@@ -184,6 +185,12 @@ const waveSpectrum = (sketch) => {
 
   sketch.setPixelDensity = function (isMobile) {
     isMobile ? sketch.pixelDensity(1) : null;
+  };
+
+  sketch.calculateWidth = function () {
+    return sketch.width > 900
+      ? sketch.windowWidth * 0.25
+      : sketch.windowWidth * 0.5;
   };
 };
 

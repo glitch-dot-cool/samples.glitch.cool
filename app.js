@@ -18,7 +18,13 @@ const main = (sketch) => {
   sketch.preload = function () {
     img = sketch.loadImage("./texture.jpg");
     mesh = sketch.loadModel("./model.obj", true);
-    video = sketch.createVideo("./video.mp4");
+
+    if (isMobile) {
+      video = sketch.createVideo("./video_lo.mp4");
+    } else {
+      video = sketch.createVideo("./video.mp4");
+    }
+
     video.hide();
     video.volume(0);
   };

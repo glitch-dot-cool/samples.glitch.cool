@@ -1,4 +1,4 @@
-// p5.disableFriendlyErrors = true;
+p5.disableFriendlyErrors = true;
 
 const waveSpectrum = (sketch) => {
   let sunnk, nuan, fft, binSize;

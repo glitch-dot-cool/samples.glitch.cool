@@ -1,4 +1,4 @@
-// p5.disableFriendlyErrors = true;
+p5.disableFriendlyErrors = true;
 
 const main = (sketch) => {
   let img, mesh, video;

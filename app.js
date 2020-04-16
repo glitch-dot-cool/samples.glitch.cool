@@ -16,7 +16,7 @@ const main = (sketch) => {
     navigator.userAgent.toLowerCase().indexOf("windows phone") !== -1;
 
   sketch.preload = function () {
-    img = sketch.loadImage("./texture.png");
+    img = sketch.loadImage("./texture.jpg");
     mesh = sketch.loadModel("./model.obj", true);
     video = sketch.createVideo("./video.mp4");
     video.hide();
@@ -35,7 +35,6 @@ const main = (sketch) => {
     sketch.setAttributes("antialias", true);
     sketch.background(0);
     sketch.selectTexture();
-    // sketch.blendMode(sketch.LIGHTEST);
 
     // fix for EasyCam to work with p5 v0.9.0+
     Dw.EasyCam.prototype.apply = function (n) {

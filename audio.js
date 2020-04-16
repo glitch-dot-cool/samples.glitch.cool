@@ -1,5 +1,8 @@
+// p5.disableFriendlyErrors = true;
+
 const waveSpectrum = (sketch) => {
   let sunnk, nuan, fft, binSize;
+  let buffer;
   let playNuan = document.querySelector("#play-nuan");
   let playSunnk = document.querySelector("#play-sunnk");
   let pause = document.querySelector("#pause");
@@ -23,6 +26,7 @@ const waveSpectrum = (sketch) => {
     const audioCanvas = sketch.createCanvas(sketch.windowWidth, 200);
     audioCanvas.parent("p5-audio-container");
     sketch.setPixelDensity(isMobile);
+    buffer = sketch.createGraphics(sketch.windowWidth * 0.25, 200);
 
     sketch.initTransportControls();
     isMobile ? (binSize = 256) : (binSize = 512);
@@ -47,6 +51,7 @@ const waveSpectrum = (sketch) => {
 
   sketch.windowResized = function () {
     sketch.resizeCanvas(sketch.windowWidth, 200);
+    buffer.resizeCanvas(sketch.windowWidth, 200);
   };
 
   sketch.initTransportControls = function () {
@@ -97,6 +102,8 @@ const waveSpectrum = (sketch) => {
 
   sketch.drawWaveformBars = function (audio) {
     let sketchWidth = sketch.windowWidth * 0.25;
+    sketch.fill(0);
+    sketch.noStroke();
     sketch.rect(0, 0, sketchWidth, sketch.height);
 
     for (let i = 0; i < audio.waveform.length; i++) {
@@ -144,25 +151,34 @@ const waveSpectrum = (sketch) => {
   };
 
   sketch.drawSpectrogram = function (audio) {
-    sketch.strokeWeight(2);
+    buffer.noFill();
+    buffer.strokeWeight(2);
     for (let i = 0; i < audio.spectrum.length; i++) {
       let band = audio.spectrum[i];
-      sketch.stroke(band);
-      sketch.point(
-        sketch.width,
-        sketch.map(i, 0, audio.spectrum.length, sketch.height, -60)
+      buffer.stroke(band);
+      buffer.point(
+        buffer.width,
+        buffer.map(i, 0, audio.spectrum.length, buffer.height, -60)
       );
     }
 
-    sketch.copy(
+    buffer.copy(
       0,
       0,
-      sketch.width,
-      sketch.height,
+      buffer.width,
+      buffer.height,
       -2,
       0,
-      sketch.width,
-      sketch.height
+      buffer.width,
+      buffer.height
+    );
+
+    sketch.image(
+      buffer,
+      sketch.width - buffer.width,
+      0,
+      buffer.width,
+      buffer.height
     );
   };
 

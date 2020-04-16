@@ -20,6 +20,7 @@ const main = (sketch) => {
     mesh = sketch.loadModel("./model.obj", true);
     video = sketch.createVideo("./video.mp4");
     video.hide();
+    video.volume(0);
   };
 
   sketch.setup = function () {

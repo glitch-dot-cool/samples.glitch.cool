@@ -195,6 +195,7 @@ const main = (sketch) => {
   sketch.selectTexture = function () {
     playNuan.addEventListener("click", () => {
       whoIsPlaying = "nuan";
+      video.pause();
     });
 
     playSunnk.addEventListener("click", () => {
@@ -204,6 +205,7 @@ const main = (sketch) => {
 
     pause.addEventListener("click", () => {
       whoIsPlaying = null;
+      video.pause();
     });
   };
 };

@@ -7,6 +7,7 @@ const waveSpectrum = (sketch) => {
   let playSunnk = document.querySelector("#play-sunnk");
   let pause = document.querySelector("#pause");
   let instructions = document.querySelector(".instructions-container");
+  let slider = document.querySelector("#volume-slider");
 
   // hacky mobile detection
   const isMobile =
@@ -87,6 +88,11 @@ const waveSpectrum = (sketch) => {
       if (sketch.windowWidth <= 540) {
         instructions.style.display = "block";
       }
+    });
+
+    slider.addEventListener("input", (e) => {
+      let vol = e.target.value * 0.01;
+      sketch.masterVolume(vol);
     });
   };
 

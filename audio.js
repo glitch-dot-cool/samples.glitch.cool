@@ -2,7 +2,7 @@ p5.disableFriendlyErrors = true;
 
 const waveSpectrum = (sketch) => {
   let sunnk, nuan, fft, binSize;
-  let buffer;
+  let buffer, sketchWidth;
   let playNuan = document.querySelector("#play-nuan");
   let playSunnk = document.querySelector("#play-sunnk");
   let pause = document.querySelector("#pause");
@@ -26,7 +26,8 @@ const waveSpectrum = (sketch) => {
     const audioCanvas = sketch.createCanvas(sketch.windowWidth, 200);
     audioCanvas.parent("p5-audio-container");
     sketch.setPixelDensity(isMobile);
-    buffer = sketch.createGraphics(sketch.windowWidth * 0.25, 200);
+    sketchWidth = sketch.calculateWidth();
+    buffer = sketch.createGraphics(sketchWidth, 200);
 
     sketch.initTransportControls();
     isMobile ? (binSize = 256) : (binSize = 512);
@@ -100,8 +101,6 @@ const waveSpectrum = (sketch) => {
   };
 
   sketch.drawWaveformBars = function (audio) {
-    let sketchWidth = sketch.calculateWidth();
-
     sketch.fill(0);
     sketch.noStroke();
     sketch.rect(0, 0, sketchWidth, sketch.height);
@@ -117,8 +116,8 @@ const waveSpectrum = (sketch) => {
   };
 
   sketch.drawWaveform = function (audio) {
-    let sketchWidth = sketch.calculateWidth();
     sketch.fill(0, 20);
+    sketch.noStroke();
     sketch.rect(0, 0, sketchWidth, sketch.height);
 
     for (let i = 0; i < audio.waveform.length; i++) {
@@ -131,7 +130,6 @@ const waveSpectrum = (sketch) => {
   };
 
   sketch.drawSpectrum = function (audio) {
-    let sketchWidth = sketch.calculateWidth();
     sketch.noStroke();
     sketch.fill(0);
     sketch.rect(sketch.width - sketchWidth, 0, sketchWidth, sketch.height);
@@ -151,7 +149,6 @@ const waveSpectrum = (sketch) => {
   };
 
   sketch.drawSpectrogram = function (audio) {
-    buffer.width = Math.floor(sketch.calculateWidth());
     buffer.noFill();
     buffer.strokeWeight(1.00001);
     for (let i = 0; i < audio.spectrum.length; i++) {
@@ -189,8 +186,8 @@ const waveSpectrum = (sketch) => {
 
   sketch.calculateWidth = function () {
     return sketch.width > 900
-      ? sketch.windowWidth * 0.25
-      : sketch.windowWidth * 0.5;
+      ? Math.floor(sketch.windowWidth * 0.25)
+      : Math.floor(sketch.windowWidth * 0.5);
   };
 };
 

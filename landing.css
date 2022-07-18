@@ -1,0 +1,39 @@
+body {
+  animation: fadeIn 2s ease-out forwards;
+  font-family: "Roboto Mono", monospace;
+}
+
+header {
+  padding: 4rem;
+}
+
+h1 {
+  font-weight: 100;
+}
+
+#gallery {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+}
+
+.card img {
+  max-width: 30vw;
+}
+
+a:hover img {
+  opacity: 0.7;
+}
+
+#logo {
+  margin-bottom: 1rem;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

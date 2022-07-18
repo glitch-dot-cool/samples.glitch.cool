@@ -18,8 +18,8 @@ const waveSpectrum = (sketch) => {
     navigator.userAgent.toLowerCase().indexOf("windows phone") !== -1;
 
   sketch.preload = function () {
-    sunnk = sketch.loadSound("./vol3_sunnk.mp3");
-    soup = sketch.loadSound("./vol3_soup.mp3");
+    sunnk = sketch.loadSound("./assets/vol3_sunnk.mp3");
+    soup = sketch.loadSound("./assets/vol3_soup.mp3");
   };
 
   sketch.setup = function () {

@@ -16,13 +16,13 @@ const main = (sketch) => {
     navigator.userAgent.toLowerCase().indexOf("windows phone") !== -1;
 
   sketch.preload = function () {
-    img = sketch.loadImage("./texture.jpg");
-    mesh = sketch.loadModel("./model.obj", true);
+    img = sketch.loadImage("./assets/texture.jpg");
+    mesh = sketch.loadModel("./assets/model.obj", true);
 
     if (isMobile) {
-      video = sketch.createVideo("./video_lo.mp4");
+      video = sketch.createVideo("./assets/video_lo.mp4");
     } else {
-      video = sketch.createVideo("./video.mp4");
+      video = sketch.createVideo("./assets/video.mp4");
     }
 
     video.hide();

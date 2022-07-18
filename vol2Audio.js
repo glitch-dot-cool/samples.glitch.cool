@@ -18,8 +18,8 @@ const waveSpectrum = (sketch) => {
     navigator.userAgent.toLowerCase().indexOf("windows phone") !== -1;
 
   sketch.preload = function () {
-    sunnk = sketch.loadSound("./sunnk_teaser.mp3");
-    nuan = sketch.loadSound("./nuan_sonar_teaser.mp3");
+    sunnk = sketch.loadSound("./assets/sunnk_teaser.mp3");
+    nuan = sketch.loadSound("./assets/nuan_sonar_teaser.mp3");
   };
 
   sketch.setup = function () {

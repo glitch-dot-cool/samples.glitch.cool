@@ -12,7 +12,7 @@ const main = (sketch) => {
     navigator.userAgent.toLowerCase().indexOf("windows phone") !== -1;
 
   sketch.preload = function () {
-    img = sketch.loadImage("./vol3_texture.jpg");
+    img = sketch.loadImage("./vol1_texture.jpg");
     mesh = sketch.loadModel("./model.obj", true);
   };
 

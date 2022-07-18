@@ -128,9 +128,6 @@ const main = (sketch) => {
     document.oncontextmenu = function () {
       return false;
     };
-    // canvas.onmousedown = function () {
-    //   return false;
-    // };
   };
 
   // utility function to get some GL/GLSL/WEBGL information

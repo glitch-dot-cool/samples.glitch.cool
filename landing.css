@@ -1,6 +1,6 @@
 body {
   animation: fadeIn 2s ease-out forwards;
-  overflow: scroll;
+  overflow: auto;
 }
 
 header {
